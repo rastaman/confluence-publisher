@@ -15,6 +15,7 @@ For now it supports:
  - confluence versions: 5.5 - 5.9
  - sphinx-build formats: "fjson", "html"
 
+__Notice that this fork works with Atlassian Cloud, however one should use the "json_conf" build format. Also, with French characters one should install the lxml HTMLParser in order to manage the HTML entities (&eacute;...)__
 
 ## Why?
 
