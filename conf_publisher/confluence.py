@@ -1,8 +1,7 @@
 import os
 import copy
-from operator import attrgetter
-import urllib, mimetypes
-from . import log, setup_logger
+import urllib
+import mimetypes
 
 try:
     from lxml import etree
@@ -167,10 +166,8 @@ class AttachmentPublisher(ConfluenceManager):
         attachments = self._api.list_attachments(content_id)
         filename = os.path.basename(filepath)
 
-        attachmentsNames = []
-        for a in attachments:
-            if a.get('title',None) is not None:
-                attachmentsNames.append(a['title'])
+        attachmentsNames = [a['title'] for a in attachments
+                            if a.get('title') is not None]
 
         if filename in attachmentsNames:
             # TODO: fixme. skipping if file already exists. its ugly hack
@@ -179,7 +176,8 @@ class AttachmentPublisher(ConfluenceManager):
         url = urllib.pathname2url(filename)
         media_type = mimetypes.guess_type(url)
         with open(filepath, 'rb') as f:
-            self._api.create_attachment(content_id, f, media_type=media_type, filename=filename)
+            self._api.create_attachment(content_id, f, media_type=media_type,
+                                        filename=filename)
 
     @staticmethod
     def _parse_attachments(data):
